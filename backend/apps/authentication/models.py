@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser, PermissionsMixin)
 from django.conf import settings
 from django.db import models
+from rest_framework_api_key.models import APIKey
+from apps.abstract.models import AbstractModel
 
 # Create your models here.
 
@@ -36,12 +38,11 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
     username = models.CharField(unique=True, max_length=128)
     name = models.CharField(max_length=128)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['name']
@@ -55,6 +56,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     def token(self):
         return self._generate_jwt_token()
 
+    @property
+    def private_key(self):
+        return self._generate_private_key()
+
+    @property
+    def public_key(self):
+        return self._generate_public_key()
+
     def get_name(self):
         return self.name
 
@@ -65,11 +74,21 @@ class User(AbstractBaseUser, PermissionsMixin):
         token = jwt.encode(
             {
                 'id': self.pk,
-                'exp': int(dt.strftime("%d"))
+                'exp': int(dt.strftime("%d")),
+                'username': self.username,
             }, settings.SECRET_KEY, algorithm='HS256'
         )
 
         return token
 
+    def _generate_public_key(self):
+        public_key = APIKey.objects.create_key(name=self.username)
+        public_key = public_key[1]
+        return public_key
+
+    def _generate_private_key(self):
+        private_key = APIKey.objects.create_key(name=self.username+self.name)
+        private_key = private_key[1]
+        return private_key
 
 

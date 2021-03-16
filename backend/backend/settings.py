@@ -36,6 +36,15 @@ AUTH_USER_MODEL = 'authentication.User'
 
 # Application definition
 
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework_api_key.permissions.HasAPIKey",
+    ]
+}
+
+#GDAL_LIBRARY_PATH = 'Quatro_Backend_Test\env\Lib\site-packages\GDAL\gdal302.dll'
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,8 +53,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_api_key',
     'apps.authentication.apps.AuthenticationConfig',
-    'django_extensions'
+    'apps.restaurant.apps.RestaurantConfig',
+    'django_extensions',
+    #'django.contrib.gis',
 ]
 
 MIDDLEWARE = [

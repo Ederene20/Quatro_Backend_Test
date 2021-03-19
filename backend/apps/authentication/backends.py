@@ -57,8 +57,8 @@ class JWTAuthentication(authentication.BaseAuthentication):
         # we simply have to decode `prefix` and `token`. This does not make for
         # clean code, but it is a good decision because we would get an error
         # if we didn't decode these values.
-        prefix = auth_header[0].decode()
-        token = auth_header[1].decode()
+        prefix = auth_header[0]
+        token = auth_header[1]
         print(token)
 
         if prefix.lower() != auth_header_prefix:

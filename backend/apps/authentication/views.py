@@ -19,8 +19,6 @@ class RegistrationAPIView(APIView):
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        #public_key = APIKey.objects.create_key(name="public_key" + "-" + request.data.get(user.username))
-        #private_key = APIKey.objects.create_key(name="private_key" + "-" + request.data.get(user.username))
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 

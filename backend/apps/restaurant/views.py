@@ -12,6 +12,7 @@ from django.contrib.gis.measure import Distance
 
 
 class RestaurantView(APIView):
+    # Save the restaurant into the database
     permission_classes = (AllowAny,)
     serializer_class = RestaurantSerializer
 
@@ -20,11 +21,11 @@ class RestaurantView(APIView):
         serializer = self.serializer_class(data=restaurant)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class ListRestaurantView(APIView):
+    # Display all restaurant in the databases
     permission_classes = (AllowAny,)
     serializer_class = RestaurantSerializer
 
@@ -35,26 +36,17 @@ class ListRestaurantView(APIView):
 
 
 class Location(APIView):
+    # list of restaurants in a 3km radius of "lng", "lat" coordinates.
     permission_classes = (AllowAny,)
-    #serializer_class = LocationSerializer
+    serializer_class = RestaurantSerializer
 
     def post(self, request):
-        lat = request.data.get('lat', None)
-        lng = request.data.get('lng', None)
+        data = request.data
+        lng = float(data['lng'])
+        lat = float(data['lat'])
         radius = 3
         point = Point(lng, lat)
         restaurant = Restaurant.objects.filter(location__distance_lt=(point, Distance(km=radius)))
-        # serializer = LocationSerializer(restaurant, many=True)
-        # return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(restaurant)
-
-
-class LocationRadiusView(APIView):
-    permission_classes = (AllowAny,)
-    serializer_class = LocationSerializer
-
-    def post(self, request):
-        restaurant_location = request.data.get('restaurant', {})
-        serializer = self.serializer_class(data=restaurant_location)
-        serializer.is_valid(raise_exception=True)
+        serializer = RestaurantSerializer(restaurant, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+

@@ -25,7 +25,7 @@ class RestaurantView(APIView):
 
 
 class ListRestaurantView(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = RestaurantSerializer
 
     def get(self, request):
@@ -36,7 +36,7 @@ class ListRestaurantView(APIView):
 
 class Location(APIView):
     permission_classes = (AllowAny,)
-    serializer_class = LocationSerializer
+    #serializer_class = LocationSerializer
 
     def post(self, request):
         lat = request.data.get('lat', None)

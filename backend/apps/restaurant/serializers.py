@@ -8,7 +8,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Restaurant
-        fields = ['name', 'public_id', 'lat', 'lng', 'created', 'updated']
+        fields = ['name', 'public_id', 'location', 'created', 'updated']
 
     def create(self, validated_data):
         return Restaurant.objects.create(**validated_data)

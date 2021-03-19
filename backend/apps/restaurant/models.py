@@ -1,6 +1,7 @@
 from django.db import models
-#from django.contrib.gis.db import models
-#from django.contrib.gis.measure import Distance
+from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
+from django.db.models import Manager
 from apps.abstract.models import AbstractModel
 
 
@@ -12,12 +13,10 @@ class RestaurantManager(models.Manager):
 
 class Restaurant(AbstractModel):
     name = models.CharField(max_length=255, unique=True)
-    #location = models.PointField()
-    #location = models.JSONField(null=True)
-    #lat = models.FloatField(default=0, max_length=32)
-    #lng = models.FloatField(default=0,max_length=32)
-
+    location = models.PointField(null=True, blank=True)
     objects = RestaurantManager()
+    #objects = GeoManager()
+    #mpoly = models.MultiPolygonField()
 
     def __str__(self):
         return self.name

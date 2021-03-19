@@ -4,7 +4,7 @@ from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser, Permi
 from django.conf import settings
 from django.db import models
 from rest_framework_api_key.models import APIKey
-from apps.abstract.models import AbstractModel
+from abstract.models import AbstractModel
 
 # Create your models here.
 
@@ -74,8 +74,8 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
         token = jwt.encode(
             {
                 'id': self.pk,
-                'exp': int(dt.strftime("%d")),
-                'username': self.username,
+                'exp': int(dt.strftime('%d')),
+                #'username': self.username,
             }, settings.SECRET_KEY, algorithm='HS256'
         )
 
@@ -90,5 +90,3 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
         private_key = APIKey.objects.create_key(name=self.username+self.name)
         private_key = private_key[1]
         return private_key
-
-

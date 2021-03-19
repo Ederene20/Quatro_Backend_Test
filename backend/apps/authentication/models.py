@@ -75,7 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
             {
                 'id': self.pk,
                 'exp': int(dt.strftime('%d')),
-                #'username': self.username,
+                'username': self.username,
             }, settings.SECRET_KEY, algorithm='HS256'
         )
 

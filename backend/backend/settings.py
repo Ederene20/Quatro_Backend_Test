@@ -51,16 +51,10 @@ AUTH_USER_MODEL = 'authentication.User'
 # Application definition
 
 REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework_api_key.permissions.HasAPIKey",
-    ],
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "authentication.backends.JWTAuthentication",
-),
+    ),
 }
-
-#GDAL_LIBRARY_PATH = r'C:\OSGeo4W64\bin\gdal301.dll'
-#GDAL_LIBRARY_PATH = 'Desktop\Quatro_Backend_Test\env\Lib\site-packages\OSGeo4W64\bin\gdal301.dll'
 
 
 INSTALLED_APPS = [
@@ -115,7 +109,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'postgres',
+        'NAME': 'backend',
         'USER': 'postgres',
         'PASSWORD': 'superuser',
         'HOST': 'localhost',

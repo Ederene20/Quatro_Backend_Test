@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import (AllowAny, IsAuthenticated)
 from .serializers import (RegistrationSerializer, LoginSerializer)
 from rest_framework import status
-# from rest_framework_api_key.models import APIKey
+from rest_framework_api_key.models import APIKey
 from .renderers import UserJSONRenderer
 
 # Create your views here.
@@ -11,8 +11,8 @@ from .renderers import UserJSONRenderer
 
 class RegistrationAPIView(APIView):
     permission_classes = (AllowAny,)
+    renderer_classes = (UserJSONRenderer,)
     serializer_class = RegistrationSerializer
-    #renderer_classes = (UserJSONRenderer,)
 
     def post(self, request):
         user = request.data.get('user', {})

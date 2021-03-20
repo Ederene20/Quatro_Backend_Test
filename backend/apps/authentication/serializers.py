@@ -6,7 +6,7 @@ from .models import User
 class RegistrationSerializer(serializers.ModelSerializer):
 
     password = serializers.CharField(max_length=128, min_length=8, write_only=True)
-    token = serializers.CharField(max_length=255, read_only=True)
+    token = serializers.CharField(read_only=True)
     #private_key = serializers.CharField(max_length=32, min_length=32, read_only=True)
     #public_key = serializers.CharField(max_length=32, min_length=32, read_only=True)
 
@@ -22,7 +22,7 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=255)
     name = serializers.CharField(max_length=255, read_only=True)
     password = serializers.CharField(max_length=128, write_only=True)
-    token = serializers.CharField(max_length=255, read_only=True)
+    token = serializers.CharField(read_only=True)
     #private_key = serializers.CharField(max_length=32, min_length=32, read_only=True)
     #public_key = serializers.CharField(max_length=32, min_length=32, read_only=True)
 

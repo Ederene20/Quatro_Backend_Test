@@ -73,10 +73,10 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
 
         token = jwt.encode(
             {
-                'id': self.pk,
-                'exp': int(dt.strftime('%d')),
-                'username': self.username,
-            }, settings.SECRET_KEY, algorithm='HS256'
+                "id": self.public_id,
+                "exp": int(dt.strftime("%d")),
+                    "username": self.username,
+            }, settings.SECRET_KEY, algorithm="HS256"
         )
 
         return token

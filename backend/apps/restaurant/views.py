@@ -1,4 +1,5 @@
 from rest_framework.views import APIView
+from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .serializers import RestaurantSerializer, LocationSerializer
 from rest_framework.response import Response
@@ -37,10 +38,14 @@ class ListRestaurantView(APIView):
 
 class Location(APIView):
     # list of restaurants in a 3km radius of "lng", "lat" coordinates.
-    permission_classes = (AllowAny,)
+    permission_classes = [HasAPIKey]
     serializer_class = RestaurantSerializer
 
     def post(self, request):
+        public_key = request.META["X-Public-Key"]
+        private_key = request.META["X-Secret-Key"]
+
+        if 
         data = request.data
         lng = float(data['lng'])
         lat = float(data['lat'])

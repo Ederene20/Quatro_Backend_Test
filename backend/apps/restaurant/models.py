@@ -19,7 +19,7 @@ class Restaurant(AbstractModel):
     objects = RestaurantManager()
 
     def save(self, *args, **kwargs):
-        # Take lng and lat and store as a set in location as coordinate in the database
+        # Take lng and lat and store them as a coordinates in the database
         self.location = Point(self.lng, self.lat)
         super(Restaurant, self).save(*args, **kwargs)
 

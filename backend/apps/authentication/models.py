@@ -1,9 +1,9 @@
 import jwt
+from rest_framework_api_key.models import APIKey
 from datetime import datetime, timedelta
 from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser, PermissionsMixin)
 from django.conf import settings
 from django.db import models
-from rest_framework_api_key.models import APIKey
 from abstract.models import AbstractModel
 
 # Create your models here.
@@ -14,10 +14,10 @@ class UserManager(BaseUserManager):
     def create_user(self, username, name, password=None):
 
         if username is None:
-            raise TypeError("User must have a name")
+            raise TypeError("User must have a username")
 
         if name is None:
-            raise TypeError("User must have a username")
+            raise TypeError("User must have a name")
 
         user = self.model(username=username, name=name)
         user.set_password(password)
@@ -57,8 +57,8 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
         return self._generate_jwt_token()
 
     @property
-    def private_key(self):
-        return self._generate_private_key()
+    def secret_key(self):
+        return self._generate_secret_key()
 
     @property
     def public_key(self):
@@ -73,20 +73,24 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
 
         token = jwt.encode(
             {
-                "id": self.public_id,
-                "exp": int(dt.strftime("%d")),
-                    "username": self.username,
+                "id": self.pk,
+                #"exp": int(dt.strftime("%d")),
+                "name": self.username,
             }, settings.SECRET_KEY, algorithm="HS256"
         )
 
         return token
 
+    def _generate_secret_key(self):
+        username = str(self.username)
+        private_key = APIKey.objects.create_key(name="X-Secret-Key" + "-" + username)
+        private_key = private_key[1]
+        return private_key
+
     def _generate_public_key(self):
-        public_key = APIKey.objects.create_key(name=self.username)
+        username = str(self.username)
+        public_key = APIKey.objects.create_key(name="X-Public-Key" + "-" + username)
         public_key = public_key[1]
         return public_key
 
-    def _generate_private_key(self):
-        private_key = APIKey.objects.create_key(name=self.username+self.name)
-        private_key = private_key[1]
-        return private_key
+

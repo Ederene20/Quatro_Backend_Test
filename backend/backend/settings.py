@@ -16,13 +16,38 @@ from pathlib import Path
 import os
 import sys
 
+AUTH_USER_MODEL = 'authentication.User'
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = '$fj($o#n8w-0#5)ozb^b_cr4)vdf_y3l7_%ubt2%0u5zv)ra45'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+ALLOWED_HOSTS = []
+
+REST_FRAMEWORK = {
+
+   # "DEFAULT_PERMISSION_CLASSES": [
+    #        "rest_framework_api_key.permissions.HasAPIKey",
+     #     ],
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'authentication.backends.JWTAuthentication',
+    ),
+}
+
 if os.name == 'nt':
     import platform
+
     OSGEO4W = r"C:\OSGeo4W"
     if '64' in platform.architecture()[0]:
         OSGEO4W += "64"
@@ -33,28 +58,8 @@ if os.name == 'nt':
     os.environ['PATH'] = OSGEO4W + r"\bin;" + os.environ['PATH']
     GDAL_LIBRARY_PATH = r'C:\OSGeo4W64\bin\gdal302.dll'
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$fj($o#n8w-0#5)ozb^b_cr4)vdf_y3l7_%ubt2%0u5zv)ra45'
-
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-AUTH_USER_MODEL = 'authentication.User'
 
 # Application definition
-
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "authentication.backends.JWTAuthentication",
-    ),
-}
 
 
 INSTALLED_APPS = [
@@ -66,6 +71,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_api_key',
+    'drf_yasg',
     'apps.authentication.apps.AuthenticationConfig',
     'apps.restaurant.apps.RestaurantConfig',
     'django_extensions',
@@ -80,7 +86,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'applications.custom_authentication.middleware.JWTAuthenticationMiddleware',
+    # 'applications.custom_authentication.middleware.JWTAuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -109,7 +115,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'backend',
+        'NAME': 'data',
         'USER': 'postgres',
         'PASSWORD': 'superuser',
         'HOST': 'localhost',

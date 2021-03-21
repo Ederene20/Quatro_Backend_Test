@@ -8,13 +8,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Restaurant
-        fields = ['name', 'lng', 'lat', 'location', 'public_id', 'created', 'updated']
+        fields = ['name', 'lng', 'lat', 'location', 'created', 'updated']
 
     def create(self, validated_data):
         return Restaurant.objects.create(**validated_data)
-
-
-class LocationSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=255)
-    lng = serializers.FloatField()
-    lat = serializers.FloatField()

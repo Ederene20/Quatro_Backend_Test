@@ -36,13 +36,11 @@ ALLOWED_HOSTS = []
 
 REST_FRAMEWORK = {
 
-   # "DEFAULT_PERMISSION_CLASSES": [
-    #        "rest_framework_api_key.permissions.HasAPIKey",
-     #     ],
-
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'authentication.backends.JWTAuthentication',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100
 }
 
 if os.name == 'nt':
@@ -115,9 +113,9 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'data',
+        'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'superuser',
+        'PASSWORD': 'guess',
         'HOST': 'localhost',
         'PORT': '5432',
     }

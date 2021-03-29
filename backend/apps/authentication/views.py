@@ -47,7 +47,7 @@ class APIKeyView(APIView):
 
 
 class UserListView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = RegistrationSerializer
 
     def get(self, request):

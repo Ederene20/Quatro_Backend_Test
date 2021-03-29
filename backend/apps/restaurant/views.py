@@ -1,6 +1,5 @@
 from rest_framework.views import APIView
 from rest_framework_api_key.models import APIKey
-from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import exceptions
 from .serializers import RestaurantSerializer
@@ -32,25 +31,32 @@ class ListRestaurantView(APIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = RestaurantSerializer
 
-    def get(self):
+    def get(self, request):
         restaurant = Restaurant.objects.all()
+        i = 0
+        for element in restaurant:
+            i = i + 1
+        total = "Total : {}".format(i)+" restaurants"
+
+        #print(total)
+
         serializer = RestaurantSerializer(restaurant, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response([total ,serializer.data], status=status.HTTP_200_OK)
 
 
 class LocationView(APIView):
     # list of restaurants in a 3km radius of "lng", "lat" coordinates.
-    permission_classes = [HasAPIKey]
+    #permission_classes = [HasAPIKey]
     serializer_class = RestaurantSerializer
 
     def post(self, request):
-        public_key = request.META["X_PUBLIC_KEY"]
+        public_key = request.META["HTTP_X_PUBLIC_KEY"]
         print(public_key)
-        secret_key = request.META["X_SECRET_KEY"]
+        secret_key = request.META["HTTP_X_SECRET_KEY"]
 
         try:
-            APIKey.objects.is_valid(public_key)
-            APIKey.objects.is_valid(secret_key)
+            APIKey.objects.get_from_key(public_key)
+            APIKey.objects.get_from_key(secret_key)
 
         except:
             msg = 'One of your api keys is incorrect'
@@ -62,5 +68,9 @@ class LocationView(APIView):
         radius = 3
         point = Point(lng, lat)
         restaurant = Restaurant.objects.filter(location__distance_lt=(point, Distance(km=radius)))
+        j = 0
+        for elements in restaurant:
+            j = j + 1
+        total = "Total : {}".format(j) + " restaurants was found."
         serializer = RestaurantSerializer(restaurant, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response([total,serializer.data], status=status.HTTP_200_OK)

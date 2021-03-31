@@ -19,7 +19,7 @@ class RestaurantView(APIView):
     serializer_class = RestaurantSerializer
 
     def post(self, request):
-        restaurant = request.data.get('restaurant', {})
+        restaurant = request.data
         serializer = self.serializer_class(data=restaurant)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -38,15 +38,12 @@ class ListRestaurantView(APIView):
             i = i + 1
         total = "Total : {}".format(i)+" restaurants"
 
-        #print(total)
-
         serializer = RestaurantSerializer(restaurant, many=True)
-        return Response([total ,serializer.data], status=status.HTTP_200_OK)
+        return Response([total, serializer.data], status=status.HTTP_200_OK)
 
 
 class LocationView(APIView):
     # list of restaurants in a 3km radius of "lng", "lat" coordinates.
-    #permission_classes = [HasAPIKey]
     serializer_class = RestaurantSerializer
 
     def post(self, request):
@@ -71,6 +68,6 @@ class LocationView(APIView):
         j = 0
         for elements in restaurant:
             j = j + 1
-        total = "Total : {}".format(j) + " restaurants was found."
+        total = "Total : {}".format(j) + " restaurant(s) was found."
         serializer = RestaurantSerializer(restaurant, many=True)
         return Response([total,serializer.data], status=status.HTTP_200_OK)

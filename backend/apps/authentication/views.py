@@ -15,7 +15,7 @@ class RegistrationAPIView(APIView):
     serializer_class = RegistrationSerializer
 
     def post(self, request):
-        user = request.data.get('user', {})
+        user = request.data
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -27,7 +27,7 @@ class LoginAPIView(APIView):
     serializer_class = LoginSerializer
 
     def post(self, request):
-        user = request.data.get('user', {})
+        user = request.data
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -40,7 +40,7 @@ class APIKeyView(APIView):
     def get(self, request):
         return Response({
             'username': request.user.username,
-            'X-Private-Key': request.user.secret_key,
+            'X-Secret-Key': request.user.secret_key,
             'X-Public-Key': request.user.public_key,
 
         })

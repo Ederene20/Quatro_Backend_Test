@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
 
 # adding the apps folder to the python path
 import os
@@ -27,12 +28,17 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$fj($o#n8w-0#5)ozb^b_cr4)vdf_y3l7_%ubt2%0u5zv)ra45'
+SECRET_KEY = os.environ.get('SECRET_KEY', '$fj($o#n8w-0#5)ozb^b_cr4)vdf_y3l7_%ubt2%0u5zv)ra45')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if os.environ.get('ENV') == 'PRODUCTION':
+    DEBUG = False
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
+else:
+    DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['quatro_backend_test.herokuapp.com']
 
 REST_FRAMEWORK = {
 
@@ -115,7 +121,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'guess',
+        'PASSWORD': 'superuser',
         'HOST': 'localhost',
         'PORT': '5432',
     }

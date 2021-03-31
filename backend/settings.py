@@ -38,7 +38,7 @@ if os.environ.get('ENV') == 'PRODUCTION':
 else:
     DEBUG = True
 
-ALLOWED_HOSTS = ['quatro_backend_test.herokuapp.com']
+ALLOWED_HOSTS = ['quatroapitest.herokuapp.com']
 
 REST_FRAMEWORK = {
 

@@ -33,8 +33,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '$fj($o#n8w-0#5)ozb^b_cr4)vdf_y3l7_%ub
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.environ.get('ENV') == 'PRODUCTION':
     DEBUG = False
-    db_from_env = dj_database_url.config(conn_max_age=500)
-    DATABASES = {'default': dj_from_env()}
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 else:
     DEBUG = True

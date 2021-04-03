@@ -17,6 +17,7 @@ import django_heroku
 import os
 import sys
 
+
 AUTH_USER_MODEL = 'authentication.User'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,6 +42,8 @@ X_FRAME_OPTIONS = 'DENY'
 if os.environ.get('ENV') == 'PRODUCTION':
     DEBUG = False
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    GDAL_LIBRARY_PATH = os.environ.get('GDAL_LIBRARY_PATH')
+    GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH')
 
 else:
     DEBUG = True

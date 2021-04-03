@@ -13,8 +13,8 @@ class RestaurantManager(models.Manager):
 
 class Restaurant(AbstractModel):
     name = models.CharField(max_length=255, unique=True)
-    lng = models.FloatField(default=0, max_length=128)
-    lat = models.FloatField(default=0, max_length=128)
+    lng = models.FloatField(default=0)
+    lat = models.FloatField(default=0)
     location = models.PointField(null=True, blank=True, default=None)
     objects = RestaurantManager()
     USERNAME_FIELD = 'name'

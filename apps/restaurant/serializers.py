@@ -6,9 +6,6 @@ from django.contrib.gis.measure import Distance
 
 class RestaurantSerializer(serializers.ModelSerializer):
     location = serializers.CharField(read_only=True)
-    lng = serializers.CharField(write_only=True)
-    lat = serializers.CharField(write_only=True)
-
 
     class Meta:
         model = Restaurant

@@ -132,12 +132,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.getenv('DATABASE_NAME', 'postgres'),
-        'USER': os.getenv('DATABASE_USER', 'postgres'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'superuser'),
-        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
-        'PORT': os.getenv('DATABASE_PORT', '5432'),
-        'CONN_MAX_AGE': 500
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'superuser',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 

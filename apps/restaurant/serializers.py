@@ -5,6 +5,10 @@ from django.contrib.gis.measure import Distance
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
+    location = serializers.CharField(read_only=True)
+    lng = serializers.CharField(write_only=True)
+    lat = serializers.CharField(write_only=True)
+
 
     class Meta:
         model = Restaurant
@@ -12,3 +16,10 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return Restaurant.objects.create(**validated_data)
+
+
+class LocationSerializer(serializers.Serializer):
+    lat = serializers.CharField()
+    lng = serializers.CharField()
+
+
